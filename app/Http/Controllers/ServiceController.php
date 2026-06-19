@@ -20,7 +20,11 @@ class ServiceController extends Controller
     {
         $service = Service::where('slug', $slug)
             ->where('status', 'active')
-            ->firstOrFail();
+            ->first();
+
+        if (! $service) {
+            return redirect('/#services')->with('error', 'That service is not currently available.');
+        }
 
         // Load related models
         $causeBullets = $service->causeBullets()->get();

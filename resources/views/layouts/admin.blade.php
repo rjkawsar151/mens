@@ -46,6 +46,13 @@
                 <span>Services CRUD</span>
             </a>
 
+            <a href="{{ url('/admin/homepage-heroes') }}" class="flex items-center space-x-3 py-2.5 px-4 rounded-xl text-sm font-semibold transition-all duration-200 {{ str_contains($currentRoute, 'homepage-heroes') ? 'bg-[#006F5C] text-white shadow-md' : 'hover:bg-gray-800 hover:text-white' }}">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 5h18M3 12h18M3 19h18M7 5v14m10-14v14" />
+                </svg>
+                <span>Homepage Hero</span>
+            </a>
+
             <a href="{{ url('/admin/appointments') }}" class="flex items-center space-x-3 py-2.5 px-4 rounded-xl text-sm font-semibold transition-all duration-200 {{ str_contains($currentRoute, 'appointments') ? 'bg-[#006F5C] text-white shadow-md' : 'hover:bg-gray-800 hover:text-white' }}">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -151,6 +158,7 @@
             <nav class="flex-grow py-6 space-y-2">
                 <a href="{{ url('/admin/dashboard') }}" class="block py-2.5 px-4 rounded-xl text-sm font-semibold hover:bg-gray-800 hover:text-white">Dashboard</a>
                 <a href="{{ url('/admin/services') }}" class="block py-2.5 px-4 rounded-xl text-sm font-semibold hover:bg-gray-800 hover:text-white">Services CRUD</a>
+                <a href="{{ url('/admin/homepage-heroes') }}" class="block py-2.5 px-4 rounded-xl text-sm font-semibold hover:bg-gray-800 hover:text-white">Homepage Hero</a>
                 <a href="{{ url('/admin/appointments') }}" class="block py-2.5 px-4 rounded-xl text-sm font-semibold hover:bg-gray-800 hover:text-white">Appointments</a>
                 <a href="{{ url('/admin/faqs') }}" class="block py-2.5 px-4 rounded-xl text-sm font-semibold hover:bg-gray-800 hover:text-white">FAQs</a>
                 <a href="{{ url('/admin/carousel') }}" class="block py-2.5 px-4 rounded-xl text-sm font-semibold hover:bg-gray-800 hover:text-white">Carousel</a>

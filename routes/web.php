@@ -23,10 +23,11 @@ use App\Http\Controllers\Admin\AppointmentController as AdminAppointmentControll
 use App\Http\Controllers\Admin\FaqController as AdminFaqController;
 use App\Http\Controllers\Admin\SettingController as AdminSettingController;
 use App\Http\Controllers\Admin\CarouselController as AdminCarouselController;
+use App\Http\Controllers\Admin\HomepageHeroController as AdminHomepageHeroController;
 
 Route::get('/', [HomeController::class, 'index']);
-Route::get('/services', [ServiceController::class, 'index']);
-Route::get('/services/{slug}', [ServiceController::class, 'show']);
+Route::get('/services', [ServiceController::class, 'index'])->name('public.services.index');
+Route::get('/services/{slug}', [ServiceController::class, 'show'])->name('public.services.show');
 Route::post('/appointments', [AppointmentController::class, 'store']);
 
 Route::get('/our-specialists', function () {
@@ -51,6 +52,7 @@ Route::prefix('admin')->group(function () {
         Route::get('/dashboard', [AdminDashboardController::class, 'index']);
 
         Route::resource('/services', AdminServiceController::class)->except(['show']);
+        Route::resource('/homepage-heroes', AdminHomepageHeroController::class)->except(['show']);
 
         Route::get('/appointments', [AdminAppointmentController::class, 'index']);
         Route::get('/appointments/{appointment}', [AdminAppointmentController::class, 'show']);

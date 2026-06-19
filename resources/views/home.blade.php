@@ -8,54 +8,101 @@
     if ($heroBackgroundImages->isEmpty() && !empty($websiteSettings->hero_image)) {
         $heroBackgroundImages = collect([$websiteSettings->hero_image]);
     }
+    $heroDefaults = (object) [
+        'badge_text' => 'MENS HEALTH SERVICES',
+        'main_title' => "Confidential & Professional Mens Care",
+        'highlighted_title_text' => 'Mens Care',
+        'description' => 'Mayfair Wellness Clinic provides specialized, respectful, and evidence-based physiotherapy for pelvic floor dysfunction, chronic pain, and post-surgery recovery.',
+        'primary_button_text' => 'Book Appointment',
+        'primary_button_link' => '#booking-form',
+        'secondary_button_1_text' => 'Our Services',
+        'secondary_button_1_link' => '#services',
+        'secondary_button_2_text' => 'Offers',
+        'secondary_button_2_link' => '#services',
+        'happy_patients_number' => '500+',
+        'services_number' => '100+',
+        'years_of_excellence_number' => '5+',
+        'hero_image' => null,
+        'floating_rating_text' => '5.0 / 5',
+        'floating_rating_label' => 'TOP RATED',
+        'floating_service_card_title' => 'Mayfair Wellness Clinic',
+        'floating_service_card_subtitle' => 'Premium Care',
+        'floating_service_list' => "Focused Shockwave Therapy\nPelvic Floor Physiotherapy\nChronic Pain Management",
+    ];
+    $hero = $homepageHero ?? $heroDefaults;
+    $heroImage = $hero->hero_image ?: $heroBackgroundImages->first();
+    $floatingServices = collect($hero->floating_services ?? preg_split('/\r\n|\r|\n/', (string) $hero->floating_service_list))
+        ->map(fn($item) => trim($item))
+        ->filter()
+        ->values();
+    $heroTitle = $hero->main_title;
+    $highlightText = $hero->highlighted_title_text;
+    $hasHighlight = $highlightText && str_contains($heroTitle, $highlightText);
+    $titleParts = $hasHighlight ? explode($highlightText, $heroTitle, 2) : [$heroTitle, ''];
 @endphp
 <!-- Hero Section -->
-<section class="home-hero relative bg-[#006F5C] text-white py-24 sm:py-32 overflow-hidden rounded-b-[40px] shadow-lg">
-    @if($heroBackgroundImages->isNotEmpty())
-    <div class="home-hero-media absolute inset-0">
-        @foreach($heroBackgroundImages as $index => $image)
-        <img src="{{ asset($image) }}" alt="" class="hero-bg-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out {{ $index === 0 ? 'opacity-100' : 'opacity-0' }}" data-index="{{ $index }}">
-        @endforeach
-        <div class="home-hero-overlay absolute inset-0 bg-gradient-to-r from-[#005547] to-transparent opacity-85"></div>
-    </div>
-    @else
-    <!-- Gradient Overlay -->
-    <div class="home-hero-overlay absolute inset-0 bg-gradient-to-r from-[#005547] to-transparent opacity-85"></div>
-    
-    <!-- Hero Image Placeholder (Confidential Consultation SVG Accent) -->
-    <div class="absolute right-0 bottom-0 top-0 w-full lg:w-1/2 opacity-20 lg:opacity-30 pointer-events-none">
-        <svg class="w-full h-full object-cover" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-                <linearGradient id="grid-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stop-color="#CC205C" />
-                    <stop offset="100%" stop-color="#006F5C" />
-                </linearGradient>
-            </defs>
-            <rect width="100" height="100" fill="url(#grid-grad)" opacity="0.1"/>
-            <circle cx="50" cy="50" r="30" stroke="white" stroke-width="0.5" stroke-dasharray="2 2"/>
-            <path d="M20 50 C40 20, 60 80, 80 50" stroke="white" stroke-width="1"/>
-        </svg>
-    </div>
-    @endif
-
-    <div class="home-hero-content max-w-7xl mx-auto px-6 sm:px-6 lg:px-8 relative z-10">
-        <div class="max-w-2xl lg:max-w-xl">
-            <span class="inline-flex items-center px-4 py-1.5 rounded-full text-xs font-bold bg-white/10 text-white border border-white/20 mb-6 uppercase tracking-wider">
-                Men's Health Services
-            </span>
-            <h1 id="hero-title" class="home-hero-title text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white mb-6 leading-tight min-h-[135px] sm:min-h-[180px] lg:min-h-[225px]">
-                <span id="hero-title-text"></span><span id="hero-cursor" class="animate-pulse">|</span>
+<section class="home-hero premium-home-hero">
+    <div class="premium-home-hero-inner">
+        <div class="premium-hero-copy">
+            <span class="premium-hero-badge">{{ $hero->badge_text }}</span>
+            <h1 id="hero-title" class="premium-hero-title">
+                @if($hasHighlight)
+                    {{ $titleParts[0] }}<span>{{ $highlightText }}</span>{{ $titleParts[1] }}
+                @else
+                    {{ $heroTitle }}
+                @endif
             </h1>
-            <p class="text-lg text-white/80 mb-8 leading-relaxed">
-                Mayfair Wellness Clinic provides specialized, respectful, and evidence-based physiotherapy for pelvic floor dysfunction, chronic pain, and post-surgery recovery.
-            </p>
-            <div class="home-hero-actions flex flex-col sm:flex-row gap-4">
-                <a href="#services" class="inline-flex items-center justify-center w-full sm:w-auto px-6 py-3.5 border border-transparent text-base font-bold rounded-full text-white bg-[#CC205C] hover:bg-[#A61A4B] shadow-md hover:shadow-lg transition-all duration-200">
-                    Discover Our Services
-                </a>
-                <a href="#booking-form" class="inline-flex items-center justify-center w-full sm:w-auto px-6 py-3.5 border-2 border-white text-base font-bold rounded-full text-white hover:bg-white hover:text-[#006F5C] transition-all duration-200">
-                    Book Appointment
-                </a>
+            <p class="premium-hero-description">{{ $hero->description }}</p>
+
+            <div class="premium-hero-actions">
+                <a href="{{ $hero->primary_button_link }}" class="premium-hero-primary">{{ $hero->primary_button_text }}</a>
+                <div class="premium-hero-secondary-actions">
+                    <a href="{{ $hero->secondary_button_1_link }}" class="premium-hero-secondary">{{ $hero->secondary_button_1_text }}</a>
+                    @if($hero->secondary_button_2_text)
+                        <a href="{{ $hero->secondary_button_2_link ?: '#services' }}" class="premium-hero-secondary">{{ $hero->secondary_button_2_text }}</a>
+                    @endif
+                </div>
+            </div>
+
+            <div class="premium-hero-stats" aria-label="Mayfair clinic statistics">
+                <div>
+                    <strong>{{ $hero->happy_patients_number }}</strong>
+                    <span>Happy Patients</span>
+                </div>
+                <div>
+                    <strong>{{ $hero->services_number }}</strong>
+                    <span>Services</span>
+                </div>
+                <div>
+                    <strong>{{ $hero->years_of_excellence_number }}</strong>
+                    <span>Years of Excellence</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="premium-hero-visual">
+            <div class="premium-hero-image-card">
+                @if($heroImage)
+                    <img src="{{ asset($heroImage) }}" alt="Mayfair Men's Health Care">
+                @else
+                    <div class="premium-hero-image-fallback">
+                        <span>Mayfair Wellness Clinic</span>
+                    </div>
+                @endif
+                <div class="premium-hero-rating">
+                    <strong>{{ $hero->floating_rating_text }}</strong>
+                    <span>{{ $hero->floating_rating_label }}</span>
+                </div>
+                <div class="premium-hero-service-card">
+                    <span>{{ $hero->floating_service_card_title }}</span>
+                    <strong>{{ $hero->floating_service_card_subtitle }}</strong>
+                    <ul>
+                        @foreach($floatingServices as $floatingService)
+                            <li>{{ $floatingService }}</li>
+                        @endforeach
+                    </ul>
+                    <a href="#booking-form">Book Now</a>
+                </div>
             </div>
         </div>
     </div>
@@ -92,9 +139,12 @@
                         $serviceImage = $service->main_image
                             ? asset($service->main_image)
                             : ($service->image_path ? asset('storage/' . $service->image_path) : null);
+                        $serviceHref = filled($service->slug)
+                            ? route('public.services.show', ['slug' => $service->slug])
+                            : '#services';
                     @endphp
                     <div class="service-card flex flex-col">
-                        <a href="{{ url('/services/' . $service->slug) }}" class="service-card-media block overflow-hidden bg-[#EEF7F4] group">
+                        <a href="{{ $serviceHref }}" class="service-card-media block overflow-hidden bg-[#EEF7F4] group">
                             @if($serviceImage)
                                 <img src="{{ $serviceImage }}" alt="{{ $service->title }}" class="transition-transform duration-500 group-hover:scale-105">
                             @else
@@ -112,7 +162,7 @@
                             </p>
                         </div>
                         <div class="px-[22px] pb-[22px] pt-0">
-                            <a href="{{ url('/services/' . $service->slug) }}" class="inline-flex items-center justify-center px-5 py-2.5 text-sm font-bold rounded-full text-white bg-[#006F5C] hover:bg-[#005547] shadow-sm hover:shadow-md transition-all duration-200">
+                            <a href="{{ $serviceHref }}" class="inline-flex items-center justify-center px-5 py-2.5 text-sm font-bold rounded-full text-white bg-[#006F5C] hover:bg-[#005547] shadow-sm hover:shadow-md transition-all duration-200">
                                 <span>Learn More</span>
                                 <svg xmlns="http://www.w3.org/2000/svg" class="ml-1 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
@@ -330,39 +380,4 @@
     });
 </script>
 
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-    const heroSlides = document.querySelectorAll('.hero-bg-slide');
-    if (heroSlides.length > 1) {
-        let currentSlide = 0;
-        setInterval(() => {
-            heroSlides[currentSlide].classList.remove('opacity-100');
-            heroSlides[currentSlide].classList.add('opacity-0');
-            currentSlide = (currentSlide + 1) % heroSlides.length;
-            heroSlides[currentSlide].classList.remove('opacity-0');
-            heroSlides[currentSlide].classList.add('opacity-100');
-        }, 3500);
-    }
-
-    const textEl = document.getElementById('hero-title-text');
-    const cursorEl = document.getElementById('hero-cursor');
-    if (!textEl) return;
-
-    const text = "Confidential & Professional Men's Care";
-    let i = 0;
-    const speed = 60;
-
-    function type() {
-        if (i < text.length) {
-            textEl.textContent += text.charAt(i);
-            i++;
-            setTimeout(type, speed);
-        } else {
-            if (cursorEl) cursorEl.style.animation = 'pulse 1s infinite';
-        }
-    }
-
-    setTimeout(type, 400);
-});
-</script>
 @endsection

@@ -72,7 +72,7 @@
                                     $isCurrent = $service->id === $side->id;
                                 @endphp
                                 <li>
-                                    <a href="{{ url('/services/' . $side->slug) }}" class="flex items-center justify-between group py-2.5 px-4 rounded-xl transition-all duration-200 {{ $isCurrent ? 'bg-[#CC205C] text-white shadow-md' : 'text-white/80 hover:bg-white/10 hover:text-white' }}">
+                                    <a href="{{ filled($side->slug) ? route('public.services.show', ['slug' => $side->slug]) : '#services' }}" class="flex items-center justify-between group py-2.5 px-4 rounded-xl transition-all duration-200 {{ $isCurrent ? 'bg-[#CC205C] text-white shadow-md' : 'text-white/80 hover:bg-white/10 hover:text-white' }}">
                                         <span class="truncate pr-2">{{ $side->title }}</span>
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transition-transform duration-200 {{ $isCurrent ? 'translate-x-1' : 'group-hover:translate-x-1' }}" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
