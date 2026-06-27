@@ -10,8 +10,8 @@
     }
     $heroDefaults = (object) [
         'badge_text' => 'MENS HEALTH SERVICES',
-        'main_title' => "Confidential & Professional Mens Care",
-        'highlighted_title_text' => 'Mens Care',
+        'main_title' => 'CONFIDENTIAL & PROFESSIONAL',
+        'highlighted_title_text' => 'MENS CARE',
         'description' => 'Mayfair Wellness Clinic provides specialized, respectful, and evidence-based physiotherapy for pelvic floor dysfunction, chronic pain, and post-surgery recovery.',
         'primary_button_text' => 'Book Appointment',
         'primary_button_link' => '#booking-form',
@@ -19,14 +19,14 @@
         'secondary_button_1_link' => '#services',
         'secondary_button_2_text' => 'Offers',
         'secondary_button_2_link' => '#services',
-        'happy_patients_number' => '500+',
+        'happy_patients_number' => '3500+',
         'services_number' => '100+',
-        'years_of_excellence_number' => '5+',
+        'years_of_excellence_number' => 'Happy Patients',
         'hero_image' => null,
         'floating_rating_text' => '5.0 / 5',
         'floating_rating_label' => 'TOP RATED',
-        'floating_service_card_title' => 'Mayfair Wellness Clinic',
-        'floating_service_card_subtitle' => 'Premium Care',
+        'floating_service_card_title' => 'Successful Treatments',
+        'floating_service_card_subtitle' => 'Premium Mens Health Care',
         'floating_service_list' => "Focused Shockwave Therapy\nPelvic Floor Physiotherapy\nChronic Pain Management",
     ];
     $hero = $homepageHero ?? $heroDefaults;
@@ -35,74 +35,133 @@
         ->map(fn($item) => trim($item))
         ->filter()
         ->values();
-    $heroTitle = $hero->main_title;
-    $highlightText = $hero->highlighted_title_text;
-    $hasHighlight = $highlightText && str_contains($heroTitle, $highlightText);
-    $titleParts = $hasHighlight ? explode($highlightText, $heroTitle, 2) : [$heroTitle, ''];
+    $heroTitle = trim($hero->main_title ?: $heroDefaults->main_title);
+    $highlightText = trim($hero->highlighted_title_text ?: $heroDefaults->highlighted_title_text);
+    if (preg_match('/confidential\s*&\s*professional\s+mens\s+care/i', $heroTitle)) {
+        $heroTitle = 'CONFIDENTIAL & PROFESSIONAL';
+        $highlightText = 'MENS CARE';
+    } elseif ($highlightText !== '' && str_contains(strtolower($heroTitle), strtolower($highlightText))) {
+        $highlightText = '';
+    }
+    $heroTitle = preg_replace('/\s*&\s*/', ' & ', strtoupper($heroTitle));
+    $highlightText = strtoupper($highlightText);
+    $heroTitleLines = str_contains($heroTitle, ' & ')
+        ? [str_replace(' &', ' &', explode(' & ', $heroTitle, 2)[0] . ' &'), explode(' & ', $heroTitle, 2)[1]]
+        : [$heroTitle];
+    $resolveHeroLink = function ($link, $fallback = '#services') {
+        $link = trim((string) $link);
+        if ($link === '') {
+            return $fallback;
+        }
+        if (str_starts_with($link, '#') || str_starts_with($link, 'http://') || str_starts_with($link, 'https://') || str_starts_with($link, 'tel:') || str_starts_with($link, 'mailto:')) {
+            return $link;
+        }
+        return url('/' . ltrim($link, '/'));
+    };
+    $primaryButtonLink = $resolveHeroLink($hero->primary_button_link, '#services');
+    $ratingText = trim($hero->floating_rating_text ?: $heroDefaults->floating_rating_text);
+    $ratingLabel = trim($hero->floating_rating_label ?: $heroDefaults->floating_rating_label);
+    $ratingDisplay = trim($ratingText . ' ' . $ratingLabel);
+    $statsInlineNumber = trim($hero->services_number ?: $heroDefaults->services_number);
+    $statsInlineLabel = trim($hero->years_of_excellence_number ?: $heroDefaults->years_of_excellence_number);
+    if (preg_match('/^\d+\+?$/', $statsInlineLabel)) {
+        $statsInlineLabel = $heroDefaults->years_of_excellence_number;
+    }
+    $statsCardTitle = trim($hero->floating_service_card_title ?: $heroDefaults->floating_service_card_title);
+    if (strcasecmp($statsCardTitle, 'Mayfair Wellness Clinic') === 0 || str_contains(strtolower($statsCardTitle), 'cured satisfied')) {
+        $statsCardTitle = $heroDefaults->floating_service_card_title;
+    }
+    $statsCardSubtitle = trim($hero->floating_service_card_subtitle ?: $heroDefaults->floating_service_card_subtitle);
+    if (strcasecmp($statsCardSubtitle, 'Premium Care') === 0 || str_contains(strtolower($statsCardSubtitle), 'team of highly')) {
+        $statsCardSubtitle = $heroDefaults->floating_service_card_subtitle;
+    }
+    $statsCardNumber = trim($hero->happy_patients_number ?: $heroDefaults->happy_patients_number);
+    if (in_array(strtolower($statsCardNumber), ['500+', '15k+', '15k'], true)) {
+        $statsCardNumber = $heroDefaults->happy_patients_number;
+    }
+    preg_match('/^(\d+)(.*)$/', $statsCardNumber, $statsNumberParts);
+    $statsCardTarget = $statsNumberParts[1] ?? preg_replace('/\D+/', '', $heroDefaults->happy_patients_number);
+    $statsCardSuffix = $statsNumberParts[2] ?? '+';
+    $sealText = strtoupper($websiteSettings->site_name ?? 'MAYFAIR WELLNESS CLINIC');
 @endphp
 <!-- Hero Section -->
 <section class="home-hero premium-home-hero">
     <div class="premium-home-hero-inner">
         <div class="premium-hero-copy">
-            <span class="premium-hero-badge">{{ $hero->badge_text }}</span>
+            <span class="premium-hero-badge">
+                <svg aria-hidden="true" viewBox="0 0 24 24">
+                    <path d="M12 3.75a8.25 8.25 0 1 0 0 16.5 8.25 8.25 0 0 0 0-16.5Zm.75 4.5v3h3v1.5h-3v3h-1.5v-3h-3v-1.5h3v-3h1.5Z" />
+                </svg>
+                {{ $hero->badge_text ?: $heroDefaults->badge_text }}
+            </span>
             <h1 id="hero-title" class="premium-hero-title">
-                @if($hasHighlight)
-                    {{ $titleParts[0] }}<span>{{ $highlightText }}</span>{{ $titleParts[1] }}
-                @else
-                    {{ $heroTitle }}
+                @foreach($heroTitleLines as $line)
+                    @if($loop->first)
+                        {{ $line }}
+                    @else
+                        <span>{{ $line }}</span>
+                    @endif
+                @endforeach
+                @if($highlightText)
+                    <span>{{ $highlightText }}</span>
                 @endif
             </h1>
-            <p class="premium-hero-description">{{ $hero->description }}</p>
+            <p class="premium-hero-description">{{ $hero->description ?: $heroDefaults->description }}</p>
 
             <div class="premium-hero-actions">
-                <a href="{{ $hero->primary_button_link }}" class="premium-hero-primary">{{ $hero->primary_button_text }}</a>
-                <div class="premium-hero-secondary-actions">
-                    <a href="{{ $hero->secondary_button_1_link }}" class="premium-hero-secondary">{{ $hero->secondary_button_1_text }}</a>
-                    @if($hero->secondary_button_2_text)
-                        <a href="{{ $hero->secondary_button_2_link ?: '#services' }}" class="premium-hero-secondary">{{ $hero->secondary_button_2_text }}</a>
-                    @endif
+                <a href="{{ $primaryButtonLink }}" class="premium-hero-primary">
+                    <span class="premium-hero-arrow" aria-hidden="true">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M7 17 17 7M9 7h8v8" />
+                        </svg>
+                    </span>
+                    {{ $hero->primary_button_text ?: $heroDefaults->primary_button_text }}
+                </a>
+                <div class="premium-hero-rating-block" aria-label="Rated {{ $ratingDisplay }}">
+                    <div class="premium-hero-stars" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                    <strong>{{ $ratingDisplay }}</strong>
+                </div>
+                <div class="premium-hero-happy-block">
+                    <strong>{{ $statsInlineNumber }}</strong>
+                    <span>{{ $statsInlineLabel }}</span>
                 </div>
             </div>
 
-            <div class="premium-hero-stats" aria-label="Mayfair clinic statistics">
-                <div>
-                    <strong>{{ $hero->happy_patients_number }}</strong>
-                    <span>Happy Patients</span>
-                </div>
-                <div>
-                    <strong>{{ $hero->services_number }}</strong>
-                    <span>Services</span>
-                </div>
-                <div>
-                    <strong>{{ $hero->years_of_excellence_number }}</strong>
-                    <span>Years of Excellence</span>
+            <div class="premium-hero-stats-card">
+                <div class="premium-hero-stats-number" data-count-target="{{ $statsCardTarget }}" data-count-suffix="{{ $statsCardSuffix }}">{{ $statsCardNumber }}</div>
+                <p>{{ $statsCardTitle }}</p>
+                <div class="premium-hero-doctors">
+                    <div class="premium-hero-avatars" aria-hidden="true">
+                        <span>DR</span>
+                        <span>PT</span>
+                        <span>MW</span>
+                    </div>
+                    <span>{{ $statsCardSubtitle }}</span>
                 </div>
             </div>
         </div>
 
         <div class="premium-hero-visual">
-            <div class="premium-hero-image-card">
+            <div class="premium-hero-circle" aria-hidden="true"></div>
+            <div class="premium-hero-brand-seal" aria-label="Mayfair Wellness Clinic">
+                <svg viewBox="0 0 140 140" aria-hidden="true">
+                    <defs>
+                        <path id="mayfair-seal-path" d="M70 70 m -50 0 a 50 50 0 1 1 100 0 a 50 50 0 1 1 -100 0" />
+                    </defs>
+                    <text>
+                        <textPath href="#mayfair-seal-path" startOffset="50%" text-anchor="middle">{{ $sealText }}</textPath>
+                    </text>
+                </svg>
+                <span>MWC</span>
+            </div>
+            <div class="premium-hero-doctor">
                 @if($heroImage)
-                    <img src="{{ asset($heroImage) }}" alt="Mayfair Men's Health Care">
+                    <img src="{{ asset($heroImage) }}" alt="Mayfair Wellness Clinic doctor">
                 @else
                     <div class="premium-hero-image-fallback">
                         <span>Mayfair Wellness Clinic</span>
                     </div>
                 @endif
-                <div class="premium-hero-rating">
-                    <strong>{{ $hero->floating_rating_text }}</strong>
-                    <span>{{ $hero->floating_rating_label }}</span>
-                </div>
-                <div class="premium-hero-service-card">
-                    <span>{{ $hero->floating_service_card_title }}</span>
-                    <strong>{{ $hero->floating_service_card_subtitle }}</strong>
-                    <ul>
-                        @foreach($floatingServices as $floatingService)
-                            <li>{{ $floatingService }}</li>
-                        @endforeach
-                    </ul>
-                    <a href="#booking-form">Book Now</a>
-                </div>
             </div>
         </div>
     </div>
@@ -119,6 +178,107 @@
         </p>
     </div>
 </section>
+
+@if(isset($carouselImages) && count($carouselImages) > 0)
+<!-- Wellness Carousel -->
+<section class="wellness-carousel-section">
+    <div class="wellness-carousel-shell" data-wellness-carousel aria-label="Mayfair Wellness Clinic highlights">
+        <div class="wellness-carousel-track">
+            @foreach($carouselImages as $slide)
+                @php
+                    $slideHref = trim((string) ($slide->link_url ?? ''));
+                    $isLinked = filled($slideHref);
+                    $slideUrl = $isLinked && !str_starts_with($slideHref, '#') && !str_starts_with($slideHref, 'http')
+                        ? url('/' . ltrim($slideHref, '/'))
+                        : $slideHref;
+                    $slideTitle = trim((string) ($slide->title ?? ''));
+                    $slideSubtitle = trim((string) ($slide->subtitle ?? ''));
+                @endphp
+                <div class="wellness-carousel-slide">
+                    @if($isLinked)
+                        <a href="{{ $slideUrl }}">
+                            <img src="{{ asset($slide->image_path) }}" alt="{{ $slide->alt_text ?: 'Mayfair Wellness Clinic' }}">
+                            @if($slideTitle || $slideSubtitle)
+                                <span class="wellness-carousel-caption">
+                                    @if($slideTitle)
+                                        <strong>{{ $slideTitle }}</strong>
+                                    @endif
+                                    @if($slideSubtitle)
+                                        <span>{{ $slideSubtitle }}</span>
+                                    @endif
+                                </span>
+                            @endif
+                        </a>
+                    @else
+                        <img src="{{ asset($slide->image_path) }}" alt="{{ $slide->alt_text ?: 'Mayfair Wellness Clinic' }}">
+                        @if($slideTitle || $slideSubtitle)
+                            <div class="wellness-carousel-caption">
+                                @if($slideTitle)
+                                    <strong>{{ $slideTitle }}</strong>
+                                @endif
+                                @if($slideSubtitle)
+                                    <span>{{ $slideSubtitle }}</span>
+                                @endif
+                            </div>
+                        @endif
+                    @endif
+                </div>
+            @endforeach
+        </div>
+        <div class="wellness-carousel-dots" aria-label="Carousel position">
+            @foreach($carouselImages as $index => $slide)
+                <button type="button" class="{{ $index === 0 ? 'is-active' : '' }}" data-carousel-dot="{{ $index }}" aria-label="Show slide {{ $index + 1 }}"></button>
+            @endforeach
+        </div>
+    </div>
+</section>
+@if(count($carouselImages) > 1)
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const carousel = document.querySelector('[data-wellness-carousel]');
+        if (!carousel) return;
+
+        const track = carousel.querySelector('.wellness-carousel-track');
+        const slides = Array.from(carousel.querySelectorAll('.wellness-carousel-slide'));
+        const dots = Array.from(carousel.querySelectorAll('[data-carousel-dot]'));
+        if (!track || slides.length < 2) return;
+
+        let index = 0;
+        let timer = null;
+
+        const goTo = (nextIndex) => {
+            index = (nextIndex + slides.length) % slides.length;
+            track.style.transform = `translateX(-${index * 100}%)`;
+            dots.forEach((dot, dotIndex) => {
+                dot.classList.toggle('is-active', dotIndex === index);
+            });
+        };
+
+        const start = () => {
+            timer = window.setInterval(() => goTo(index + 1), 4000);
+        };
+
+        const restart = () => {
+            if (timer) window.clearInterval(timer);
+            start();
+        };
+
+        dots.forEach((dot) => {
+            dot.addEventListener('click', () => {
+                goTo(Number(dot.dataset.carouselDot));
+                restart();
+            });
+        });
+
+        carousel.addEventListener('mouseenter', () => {
+            if (timer) window.clearInterval(timer);
+        });
+        carousel.addEventListener('mouseleave', start);
+        start();
+    });
+</script>
+@endif
+@endif
 
 <!-- Services Grid -->
 <section id="services" class="services-section py-20 bg-white">
@@ -140,7 +300,7 @@
                             ? asset($service->main_image)
                             : ($service->image_path ? asset('storage/' . $service->image_path) : null);
                         $serviceHref = filled($service->slug)
-                            ? route('public.services.show', ['slug' => $service->slug])
+                            ? url('/services/' . $service->slug)
                             : '#services';
                     @endphp
                     <div class="service-card flex flex-col">
@@ -306,14 +466,17 @@
                     <div>
                         <label for="preferred_time" class="block text-sm font-semibold text-[#111827] mb-2">Preferred Time *</label>
                         <select name="preferred_time" id="preferred_time" required class="w-full px-4 py-3 bg-[#F4FAF8] border border-[#EEF7F4] rounded-full text-sm focus:outline-none focus:border-[#006F5C] transition-colors appearance-none">
-                            <option value="10:00 AM">10:00 AM</option>
                             <option value="11:00 AM">11:00 AM</option>
                             <option value="12:00 PM">12:00 PM</option>
+                            <option value="01:00 PM">01:00 PM</option>
+                            <option value="02:00 PM">02:00 PM</option>
                             <option value="03:00 PM">03:00 PM</option>
                             <option value="04:00 PM">04:00 PM</option>
                             <option value="05:00 PM">05:00 PM</option>
                             <option value="06:00 PM">06:00 PM</option>
                             <option value="07:00 PM">07:00 PM</option>
+                            <option value="08:00 PM">08:00 PM</option>
+                            <option value="09:00 PM">09:00 PM</option>
                         </select>
                     </div>
                 </div>
@@ -336,6 +499,26 @@
 <!-- Appointment Script -->
 <script>
     document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('[data-count-target]').forEach((counter) => {
+            const target = Number(counter.dataset.countTarget || 0);
+            const suffix = counter.dataset.countSuffix || '';
+            const duration = 1300;
+            const startTime = performance.now();
+
+            const animate = (now) => {
+                const progress = Math.min((now - startTime) / duration, 1);
+                const eased = 1 - Math.pow(1 - progress, 3);
+                counter.textContent = `${Math.round(target * eased).toLocaleString()}${suffix}`;
+
+                if (progress < 1) {
+                    requestAnimationFrame(animate);
+                }
+            };
+
+            counter.textContent = `0${suffix}`;
+            requestAnimationFrame(animate);
+        });
+
         const form = document.getElementById('main-appointment-form');
         const errorsDiv = document.getElementById('booking-errors');
         const successDiv = document.getElementById('booking-success');

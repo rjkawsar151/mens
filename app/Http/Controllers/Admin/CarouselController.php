@@ -11,7 +11,7 @@ class CarouselController extends Controller
 {
     public function index()
     {
-        $images = CarouselImage::where('status', 'active')->orderBy('sort_order')->get();
+        $images = CarouselImage::orderBy('sort_order')->orderByDesc('id')->get();
         return view('admin.carousel', compact('images'));
     }
 
@@ -19,7 +19,7 @@ class CarouselController extends Controller
     {
         $request->validate([
             'images' => 'required|array',
-            'images.*' => 'required|image|mimes:jpeg,png,jpg,gif,svg,webp|max:5120',
+            'images.*' => 'required|image|mimes:jpeg,png,jpg,gif,svg,webp|max:20480',
         ]);
 
         if (!File::isDirectory(public_path('uploads/carousel'))) {
@@ -34,6 +34,8 @@ class CarouselController extends Controller
 
             CarouselImage::create([
                 'image_path' => 'uploads/carousel/' . $fileName,
+                'title' => null,
+                'subtitle' => null,
                 'alt_text' => null,
                 'link_url' => null,
                 'sort_order' => $maxOrder + $i + 1,
@@ -43,6 +45,31 @@ class CarouselController extends Controller
 
         $count = count($request->file('images'));
         return back()->with('success', "$count carousel image(s) added successfully.");
+    }
+
+    public function update(Request $request, $id)
+    {
+        $image = CarouselImage::findOrFail($id);
+
+        $data = $request->validate([
+            'title' => 'nullable|string|max:255',
+            'subtitle' => 'nullable|string|max:255',
+            'alt_text' => 'nullable|string|max:255',
+            'link_url' => 'nullable|string|max:255',
+            'sort_order' => 'nullable|integer|min:0',
+            'status' => 'required|in:active,inactive',
+        ]);
+
+        $image->update([
+            'title' => $data['title'] ?? null,
+            'subtitle' => $data['subtitle'] ?? null,
+            'alt_text' => $data['alt_text'] ?? null,
+            'link_url' => $data['link_url'] ?? null,
+            'sort_order' => $data['sort_order'] ?? 0,
+            'status' => $data['status'],
+        ]);
+
+        return back()->with('success', 'Carousel image settings updated.');
     }
 
     public function destroy($id)

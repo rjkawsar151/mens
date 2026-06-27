@@ -43,6 +43,12 @@ class Handler extends ExceptionHandler
      */
     public function register()
     {
+        $this->renderable(function (\Illuminate\Http\Exceptions\PostTooLargeException $e, $request) {
+            if (str_contains($request->getRequestUri(), '/admin/carousel')) {
+                return redirect(url('/admin/carousel?upload_too_large=1'));
+            }
+        });
+
         $this->reportable(function (Throwable $e) {
             //
         });

@@ -288,15 +288,26 @@
     </footer>
 
     <!-- Floating WhatsApp Button -->
-    <a href="https://wa.me/8801986660000?text=Hi%20Mayfair%20Wellness%20Clinic%2C%20I%20would%20like%20to%20book%20a%20consultation." target="_blank" rel="noopener noreferrer" style="position:fixed;bottom:24px;right:24px;z-index:99999;width:56px;height:56px;display:flex;align-items:center;justify-content:center;background:#25D366;border-radius:50%;box-shadow:0 4px 15px rgba(0,0,0,0.3);text-decoration:none;" onmouseover="this.style.transform='scale(1.12)'" onmouseout="this.style.transform='scale(1)'" aria-label="Chat on WhatsApp">
-        <svg style="width:28px;height:28px;fill:white;display:block" viewBox="0 0 24 24">
-            <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.73-1.455L0 24zm6.59-4.846c1.6.95 3.397 1.453 5.409 1.454 5.928 0 10.751-4.82 10.754-10.748.002-2.873-1.102-5.574-3.112-7.588-2.01-2.013-4.685-3.123-7.582-3.123-5.938 0-10.761 4.822-10.765 10.75-.001 2.03.526 4.017 1.524 5.786l-1.001 3.654 3.777-.985zM17.78 14.86c-.33-.165-1.954-.964-2.253-1.074-.3-.109-.518-.165-.735.165-.218.33-.842 1.074-1.03 1.293-.19.219-.379.246-.71.081-1.213-.607-2.038-1.09-2.85-2.483-.217-.373.217-.346.621-1.154.068-.137.034-.257-.017-.366-.051-.11-.442-1.066-.606-1.46-.16-.383-.336-.331-.46-.338-.12-.006-.257-.007-.395-.007-.137 0-.361.052-.55.257-.189.206-.723.707-.723 1.724 0 1.018.74 2.002.843 2.141.103.137 1.457 2.224 3.53 3.12.493.213.878.34 1.179.436.496.157.947.135 1.303.082.397-.059 1.954-.799 2.228-1.57.275-.771.275-1.432.193-1.57-.083-.138-.302-.22-.632-.385z"/>
-        </svg>
+    <a id="floating-whatsapp-button" href="https://wa.me/8801986660000?text=Hi%20Mayfair%20Wellness%20Clinic%2C%20I%20would%20like%20to%20book%20a%20consultation." target="_blank" rel="noopener noreferrer" class="floating-whatsapp-button" aria-label="Chat on WhatsApp">
+        <span class="floating-whatsapp-button-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+                <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.73-1.455L0 24zm6.59-4.846c1.6.95 3.397 1.453 5.409 1.454 5.928 0 10.751-4.82 10.754-10.748.002-2.873-1.102-5.574-3.112-7.588-2.01-2.013-4.685-3.123-7.582-3.123-5.938 0-10.761 4.822-10.765 10.75-.001 2.03.526 4.017 1.524 5.786l-1.001 3.654 3.777-.985zM17.78 14.86c-.33-.165-1.954-.964-2.253-1.074-.3-.109-.518-.165-.735.165-.218.33-.842 1.074-1.03 1.293-.19.219-.379.246-.71.081-1.213-.607-2.038-1.09-2.85-2.483-.217-.373.217-.346.621-1.154.068-.137.034-.257-.017-.366-.051-.11-.442-1.066-.606-1.46-.16-.383-.336-.331-.46-.338-.12-.006-.257-.007-.395-.007-.137 0-.361.052-.55.257-.189.206-.723.707-.723 1.724 0 1.018.74 2.002.843 2.141.103.137 1.457 2.224 3.53 3.12.493.213.878.34 1.179.436.496.157.947.135 1.303.082.397-.059 1.954-.799 2.228-1.57.275-.771.275-1.432.193-1.57-.083-.138-.302-.22-.632-.385z"/>
+            </svg>
+        </span>
     </a>
 
     <!-- Mobile Drawer Script -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            const whatsappButton = document.getElementById('floating-whatsapp-button');
+            if (whatsappButton) {
+                document.body.appendChild(whatsappButton);
+                whatsappButton.style.setProperty('position', 'fixed', 'important');
+                whatsappButton.style.setProperty('right', '24px', 'important');
+                whatsappButton.style.setProperty('bottom', '24px', 'important');
+                whatsappButton.style.setProperty('z-index', '2147483647', 'important');
+            }
+
             const btn = document.getElementById('mobile-menu-btn');
             const wrapper = document.getElementById('mobile-drawer');
             const backdrop = document.getElementById('mobile-drawer-backdrop');

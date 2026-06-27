@@ -11,6 +11,8 @@ class CarouselImage extends Model
 
     protected $fillable = [
         'image_path',
+        'title',
+        'subtitle',
         'alt_text',
         'link_url',
         'sort_order',

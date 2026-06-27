@@ -72,7 +72,7 @@
                                     $isCurrent = $service->id === $side->id;
                                 @endphp
                                 <li>
-                                    <a href="{{ filled($side->slug) ? route('public.services.show', ['slug' => $side->slug]) : '#services' }}" class="flex items-center justify-between group py-2.5 px-4 rounded-xl transition-all duration-200 {{ $isCurrent ? 'bg-[#CC205C] text-white shadow-md' : 'text-white/80 hover:bg-white/10 hover:text-white' }}">
+                                    <a href="{{ filled($side->slug) ? url('/services/' . $side->slug) : '#services' }}" class="flex items-center justify-between group py-2.5 px-4 rounded-xl transition-all duration-200 {{ $isCurrent ? 'bg-[#CC205C] text-white shadow-md' : 'text-white/80 hover:bg-white/10 hover:text-white' }}">
                                         <span class="truncate pr-2">{{ $side->title }}</span>
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transition-transform duration-200 {{ $isCurrent ? 'translate-x-1' : 'group-hover:translate-x-1' }}" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
@@ -313,14 +313,17 @@
                             <div>
                                 <label for="preferred_time" class="block text-sm font-semibold text-[#111827] mb-2">Preferred Time *</label>
                                 <select name="preferred_time" id="preferred_time" required class="w-full px-4 py-3 bg-[#F4FAF8] border border-[#EEF7F4] rounded-full text-sm focus:outline-none focus:border-[#006F5C] transition-colors appearance-none">
-                                    <option value="10:00 AM">Tomorrow, 10:00 AM</option>
                                     <option value="11:00 AM">Tomorrow, 11:00 AM</option>
                                     <option value="12:00 PM">Tomorrow, 12:00 PM</option>
+                                    <option value="01:00 PM">Tomorrow, 01:00 PM</option>
+                                    <option value="02:00 PM">Tomorrow, 02:00 PM</option>
                                     <option value="03:00 PM">Tomorrow, 03:00 PM</option>
                                     <option value="04:00 PM">Tomorrow, 04:00 PM</option>
                                     <option value="05:00 PM">Tomorrow, 05:00 PM</option>
                                     <option value="06:00 PM">Tomorrow, 06:00 PM</option>
                                     <option value="07:00 PM">Tomorrow, 07:00 PM</option>
+                                    <option value="08:00 PM">Tomorrow, 08:00 PM</option>
+                                    <option value="09:00 PM">Tomorrow, 09:00 PM</option>
                                 </select>
                             </div>
                         </div>

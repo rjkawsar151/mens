@@ -64,8 +64,83 @@ class DatabaseSeeder extends Seeder
         // 4. Header Menus
         $headerMenus = [
             ['Home', '/'],
-            ['Services', '/services'],
-            ['Our Specialists', 'https://mayfair.com.bd/our-specialists'],
+            ['Services', '/sI want to update the “Featured Medical Treatments” service cards section.
+
+Current frontend section shows treatment/service cards with only text and “Learn More”. I want each service card to have an image.
+
+Please inspect the project structure first, then implement this properly using the existing admin panel/service management flow.
+
+Requirements:
+
+1. Database
+- Add a nullable image field for services/treatments.
+- Use a clear column name like `image`, `image_path`, or match the existing project convention.
+- Create a migration, do not edit old migrations.
+
+2. Model
+- Update the Service/Treatment model fillable fields.
+- Make sure the image field can be saved and updated.
+
+3. Admin Panel
+- In the service create form, add an image upload input.
+- In the service edit form, add an image upload input.
+- Show current uploaded image preview on edit page.
+- Add option to replace image.
+- If service image is updated, delete the old image from storage.
+- Image upload validation:
+  - nullable on update
+  - required or nullable on create depending on current service workflow
+  - accepted types: jpg, jpeg, png, webp
+  - max size: 2MB or project standard
+
+4. Storage
+- Store uploaded images in Laravel public disk, for example:
+  `storage/app/public/services`
+- Save only the relative path in database.
+- Make sure image URL works with:
+  `asset('storage/' . $service->image_path)`
+- Do not store full domain URL in database.
+- If needed, mention that `php artisan storage:link` must be run.
+
+5. Controller
+- Update service store method to handle image upload.
+- Update service update method to handle image replacement.
+- On delete, remove the uploaded image from storage if it exists.
+- Keep existing fields and logic unchanged.
+
+6. Frontend Service Cards
+- Update the “Featured Medical Treatments” cards to display service image.
+- Image should appear at the top of each card.
+- Use clean medical-style UI.
+- Keep existing card title/description and “Learn More” link.
+- Image style:
+  - full card width
+  - fixed height around 180px desktop
+  - object-fit: cover
+  - rounded top corners matching card border radius
+  - responsive for mobile
+- Add fallback placeholder if image is missing.
+- Use service title as image alt text.
+
+7. Design
+- Preserve the current layout: 3 cards per row on desktop, responsive on tablet/mobile.
+- Do not break current spacing, border radius, shadow, or Learn More style.
+- Keep the Mayfair clean white/green medical look.
+
+8. Code Quality
+- Follow existing naming conventions and folder structure.
+- Do not rewrite unrelated parts.
+- Avoid duplicate code.
+- After changes, tell me:
+  - which files were changed
+  - what each change does
+  - any commands I need to run
+
+Expected commands may include:
+php artisan migrate
+php artisan storage:link
+php artisan optimize:clearervices'],
+            ['Our Specialists', 'https://mayfair.com.bd/our-physiotherapy-specialists/'],
             ['About Us', 'https://mayfair.com.bd/about-us'],
             ['Contact', 'https://mayfair.com.bd/contact']
         ];
@@ -106,7 +181,7 @@ class DatabaseSeeder extends Seeder
         // Useful Links Menus
         $usefulMenus = [
             ['What we treat', 'https://mayfair.com.bd/what-we-treat'],
-            ['Our Doctors', 'https://mayfair.com.bd/our-specialists'],
+            ['Our Doctors', 'https://mayfair.com.bd/our-physiotherapy-specialists/'],
             ['All Services', '/services'],
             ['How we treat', 'https://mayfair.com.bd/how-we-treat'],
             ['Contact', 'https://mayfair.com.bd/contact'],

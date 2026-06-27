@@ -18,13 +18,13 @@
             <input type="text" name="badge_text" value="{{ old('badge_text', $hero->badge_text) }}" required class="w-full px-4 py-3 bg-[#F4FAF8] border border-[#EEF7F4] rounded-2xl text-sm focus:outline-none focus:border-[#006F5C] transition-colors">
         </div>
         <div>
-            <label class="block text-xs font-bold text-[#111827] uppercase tracking-wider mb-2">Highlighted Title Text</label>
+            <label class="block text-xs font-bold text-[#111827] uppercase tracking-wider mb-2">Second Title Line</label>
             <input type="text" name="highlighted_title_text" value="{{ old('highlighted_title_text', $hero->highlighted_title_text) }}" class="w-full px-4 py-3 bg-[#F4FAF8] border border-[#EEF7F4] rounded-2xl text-sm focus:outline-none focus:border-[#006F5C] transition-colors">
         </div>
     </div>
 
     <div>
-        <label class="block text-xs font-bold text-[#111827] uppercase tracking-wider mb-2">Main Title *</label>
+        <label class="block text-xs font-bold text-[#111827] uppercase tracking-wider mb-2">Main Title / First Title Line *</label>
         <input type="text" name="main_title" value="{{ old('main_title', $hero->main_title) }}" required class="w-full px-4 py-3 bg-[#F4FAF8] border border-[#EEF7F4] rounded-2xl text-sm focus:outline-none focus:border-[#006F5C] transition-colors">
     </div>
 
@@ -39,12 +39,13 @@
 
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
         <div>
-            <label class="block text-xs font-bold text-[#111827] uppercase tracking-wider mb-2">Primary Button Text *</label>
+            <label class="block text-xs font-bold text-[#111827] uppercase tracking-wider mb-2">Discover Button Text *</label>
             <input type="text" name="primary_button_text" value="{{ old('primary_button_text', $hero->primary_button_text) }}" required class="w-full px-4 py-3 bg-[#F4FAF8] border border-[#EEF7F4] rounded-2xl text-sm focus:outline-none focus:border-[#006F5C] transition-colors">
         </div>
         <div>
-            <label class="block text-xs font-bold text-[#111827] uppercase tracking-wider mb-2">Primary Button Link *</label>
+            <label class="block text-xs font-bold text-[#111827] uppercase tracking-wider mb-2">Discover Button Link *</label>
             <input type="text" name="primary_button_link" value="{{ old('primary_button_link', $hero->primary_button_link) }}" required class="w-full px-4 py-3 bg-[#F4FAF8] border border-[#EEF7F4] rounded-2xl text-sm focus:outline-none focus:border-[#006F5C] transition-colors">
+            <p class="text-xs text-[#6B7280] mt-1">Use #services or #booking-form for same-page sections. /explore and /open redirect to services.</p>
         </div>
         <div>
             <label class="block text-xs font-bold text-[#111827] uppercase tracking-wider mb-2">Secondary Button 1 Text *</label>
@@ -66,15 +67,15 @@
 
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
         <div>
-            <label class="block text-xs font-bold text-[#111827] uppercase tracking-wider mb-2">Happy Patients *</label>
+            <label class="block text-xs font-bold text-[#111827] uppercase tracking-wider mb-2">Stats Card Number *</label>
             <input type="text" name="happy_patients_number" value="{{ old('happy_patients_number', $hero->happy_patients_number) }}" required class="w-full px-4 py-3 bg-[#F4FAF8] border border-[#EEF7F4] rounded-2xl text-sm focus:outline-none focus:border-[#006F5C] transition-colors">
         </div>
         <div>
-            <label class="block text-xs font-bold text-[#111827] uppercase tracking-wider mb-2">Services Number *</label>
+            <label class="block text-xs font-bold text-[#111827] uppercase tracking-wider mb-2">Satisfaction Number *</label>
             <input type="text" name="services_number" value="{{ old('services_number', $hero->services_number) }}" required class="w-full px-4 py-3 bg-[#F4FAF8] border border-[#EEF7F4] rounded-2xl text-sm focus:outline-none focus:border-[#006F5C] transition-colors">
         </div>
         <div>
-            <label class="block text-xs font-bold text-[#111827] uppercase tracking-wider mb-2">Years of Excellence *</label>
+            <label class="block text-xs font-bold text-[#111827] uppercase tracking-wider mb-2">Satisfaction Label *</label>
             <input type="text" name="years_of_excellence_number" value="{{ old('years_of_excellence_number', $hero->years_of_excellence_number) }}" required class="w-full px-4 py-3 bg-[#F4FAF8] border border-[#EEF7F4] rounded-2xl text-sm focus:outline-none focus:border-[#006F5C] transition-colors">
         </div>
     </div>
@@ -97,19 +98,19 @@
 
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
         <div>
-            <label class="block text-xs font-bold text-[#111827] uppercase tracking-wider mb-2">Rating Text *</label>
+            <label class="block text-xs font-bold text-[#111827] uppercase tracking-wider mb-2">Rating Number *</label>
             <input type="text" name="floating_rating_text" value="{{ old('floating_rating_text', $hero->floating_rating_text) }}" required class="w-full px-4 py-3 bg-[#F4FAF8] border border-[#EEF7F4] rounded-2xl text-sm focus:outline-none focus:border-[#006F5C] transition-colors">
         </div>
         <div>
-            <label class="block text-xs font-bold text-[#111827] uppercase tracking-wider mb-2">Rating Label *</label>
+            <label class="block text-xs font-bold text-[#111827] uppercase tracking-wider mb-2">Rating Count Label *</label>
             <input type="text" name="floating_rating_label" value="{{ old('floating_rating_label', $hero->floating_rating_label) }}" required class="w-full px-4 py-3 bg-[#F4FAF8] border border-[#EEF7F4] rounded-2xl text-sm focus:outline-none focus:border-[#006F5C] transition-colors">
         </div>
         <div>
-            <label class="block text-xs font-bold text-[#111827] uppercase tracking-wider mb-2">Floating Card Title *</label>
+            <label class="block text-xs font-bold text-[#111827] uppercase tracking-wider mb-2">Stats Card Text *</label>
             <input type="text" name="floating_service_card_title" value="{{ old('floating_service_card_title', $hero->floating_service_card_title) }}" required class="w-full px-4 py-3 bg-[#F4FAF8] border border-[#EEF7F4] rounded-2xl text-sm focus:outline-none focus:border-[#006F5C] transition-colors">
         </div>
         <div>
-            <label class="block text-xs font-bold text-[#111827] uppercase tracking-wider mb-2">Floating Card Subtitle *</label>
+            <label class="block text-xs font-bold text-[#111827] uppercase tracking-wider mb-2">Doctor Team Text *</label>
             <input type="text" name="floating_service_card_subtitle" value="{{ old('floating_service_card_subtitle', $hero->floating_service_card_subtitle) }}" required class="w-full px-4 py-3 bg-[#F4FAF8] border border-[#EEF7F4] rounded-2xl text-sm focus:outline-none focus:border-[#006F5C] transition-colors">
         </div>
     </div>

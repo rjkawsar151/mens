@@ -29,6 +29,26 @@ Route::get('/', [HomeController::class, 'index']);
 Route::get('/services', [ServiceController::class, 'index'])->name('public.services.index');
 Route::get('/services/{slug}', [ServiceController::class, 'show'])->name('public.services.show');
 Route::post('/appointments', [AppointmentController::class, 'store']);
+Route::prefix('mens')->group(function () {
+    Route::get('/services', function () {
+        return redirect('/Mens/services', 301);
+    });
+    Route::get('/services/{slug}', function ($slug) {
+        return redirect('/Mens/services/' . $slug, 301);
+    });
+    Route::get('/admin/login', function () {
+        return redirect('/Mens/admin/login', 301);
+    });
+    Route::get('/{path?}', function ($path = '') {
+        return redirect('/Mens/' . ltrim($path, '/'), 301);
+    })->where('path', '.*');
+});
+Route::get('/explore', function () {
+    return redirect(url('/#services'));
+});
+Route::get('/open', function () {
+    return redirect(url('/#services'));
+});
 
 Route::get('/our-specialists', function () {
     return redirect('/services');
@@ -37,7 +57,7 @@ Route::get('/about-us', function () {
     return redirect('/services');
 });
 Route::get('/contact', function () {
-    return redirect('/#booking-form');
+    return redirect(url('/#booking-form'));
 });
 Route::get('/blogs', function () {
     return redirect('/services');
@@ -66,6 +86,7 @@ Route::prefix('admin')->group(function () {
 
         Route::get('/carousel', [AdminCarouselController::class, 'index']);
         Route::post('/carousel', [AdminCarouselController::class, 'store']);
+        Route::put('/carousel/{id}', [AdminCarouselController::class, 'update']);
         Route::delete('/carousel/{id}', [AdminCarouselController::class, 'destroy']);
     });
 });
